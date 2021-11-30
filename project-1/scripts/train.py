@@ -74,7 +74,7 @@ def main():
     run.log("Accuracy", float(accuracy))
 
     # Saving model (commented as AML takes care of this already)
-    # joblib.dump(model, 'models/logistic_regression.joblib')
+    joblib.dump(model, './models/bankmarketing.joblib')
 
 if __name__ == '__main__':
     main()
