@@ -19,6 +19,11 @@ dataset = TabularDatasetFactory.from_delimited_files(url)
 # This other approach creates a DataFrame from the data
 # ds = requests.get(url, allow_redirects=True)
 # df = pd.read_csv(io.StringIO(ds.content.decode('utf-8')))
+# ws = Workspace.from_config()
+# datastore = ws.get_default_datastore()
+# ds = TabularDatasetFactory.register_pandas_dataframe(df, target='./training', name='dataframe_name')
+
+
 
 def clean_data(data):
     # Dict for cleaning data
