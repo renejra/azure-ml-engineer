@@ -12,12 +12,13 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 import requests
 import io
 
-# TODO: Create TabularDataset using TabularDatasetFactory
 # Data is located at:
 url = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
-ds = requests.get(url, allow_redirects=True)
-# df = pd.read_csv(io.StringIO(ds.content.decode('utf-8')))
 dataset = TabularDatasetFactory.from_delimited_files(url)
+
+# This other approach creates a DataFrame from the data
+# ds = requests.get(url, allow_redirects=True)
+# df = pd.read_csv(io.StringIO(ds.content.decode('utf-8')))
 
 def clean_data(data):
     # Dict for cleaning data
@@ -48,9 +49,10 @@ def clean_data(data):
 
     return x_df, y_df
 
-# TODO: Split data into train and test sets.
+# Clean data and split for training and testing
 x, y = clean_data(dataset)
-x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=False)
+x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.75)
+print(f'training shape: {x_train.shape}, labels: {y_train.shape} \ntesting shape: {x_test.shape}, labels: {y_test.shape}')
 
 run = Run.get_context()
 
@@ -63,13 +65,16 @@ def main():
 
     args = parser.parse_args()
 
-    run.log("Regularization Strength:", np.float(args.C))
-    run.log("Max iterations:", np.int(args.max_iter))
+    run.log("Regularization Strength:", float(args.C))
+    run.log("Max iterations:", int(args.max_iter))
 
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
-    run.log("Accuracy", np.float(accuracy))
+    run.log("Accuracy", float(accuracy))
+
+    # Saving model (commented as AML takes care of this already)
+    # joblib.dump(model, 'models/logistic_regression.joblib')
 
 if __name__ == '__main__':
     main()

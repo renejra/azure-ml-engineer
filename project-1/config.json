@@ -1,0 +1,8 @@
+{
+    "_comment": "This is an example config.json file that enables Workspace.from_config()",
+    "_comment_2": "This file can be downloaded directly from Azure ML after creating a workspace",
+
+    "subscription_id": "<subscription-id>",
+    "resource_group": "<resource-group>",
+    "workspace_name": "<workspace-name>"
+}
