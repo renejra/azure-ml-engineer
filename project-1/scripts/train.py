@@ -81,7 +81,7 @@ def main():
     # Saving model
     cur = os.getcwd()
     up = os.path.dirname(cur)
-    joblib.dump(model, os.path.join(os.getcwd(), 'models/bankmkt-hd.joblib'))
+    joblib.dump(model, os.path.join(os.getcwd(), 'outputs/bankmkt-hd.joblib'))
 
 if __name__ == '__main__':
     main()
