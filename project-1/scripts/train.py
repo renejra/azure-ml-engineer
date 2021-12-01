@@ -1,16 +1,16 @@
 from sklearn.linear_model import LogisticRegression
 import argparse
-import os
-import numpy as np
-from sklearn.metrics import mean_squared_error
+# import os
+# import numpy as np
+# from sklearn.metrics import mean_squared_error
 import joblib
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder
+# from sklearn.preprocessing import OneHotEncoder
 import pandas as pd
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
-import requests
-import io
+# import requests
+# import io
 
 # Data is located at:
 url = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
@@ -78,7 +78,7 @@ def main():
     accuracy = model.score(x_test, y_test)
     run.log("Accuracy", float(accuracy))
 
-    # Saving model (commented as AML takes care of this already)
+    # Saving model
     joblib.dump(model, './models/bankmarketing.joblib')
 
 if __name__ == '__main__':
