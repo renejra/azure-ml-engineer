@@ -21,7 +21,7 @@ dataset = TabularDatasetFactory.from_delimited_files(url)
 # df = pd.read_csv(io.StringIO(ds.content.decode('utf-8')))
 # ws = Workspace.from_config()
 # datastore = ws.get_default_datastore()
-# ds = TabularDatasetFactory.register_pandas_dataframe(df, target='./training', name='dataframe_name')
+# ds = TabularDatasetFactory.register_pandas_dataframe(df, target=[(datastore, './training')], name='dataframe_name')
 
 
 
