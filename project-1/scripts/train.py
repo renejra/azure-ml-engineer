@@ -1,6 +1,6 @@
 from sklearn.linear_model import LogisticRegression
 import argparse
-# import os
+import os
 # import numpy as np
 # from sklearn.metrics import mean_squared_error
 import joblib
@@ -79,7 +79,9 @@ def main():
     run.log("Accuracy", float(accuracy))
 
     # Saving model
-    joblib.dump(model, './models/bankmarketing.joblib')
+    cur = os.getcwd()
+    up = os.path.dirname(cur)
+    joblib.dump(model, os.path.join(os.getcwd(), 'models/bankmkt-hd.joblib'))
 
 if __name__ == '__main__':
     main()
