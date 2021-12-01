@@ -79,9 +79,7 @@ def main():
     run.log("Accuracy", float(accuracy))
 
     # Saving model
-    cur = os.getcwd()
-    up = os.path.dirname(cur)
-    joblib.dump(model, os.path.join(os.getcwd(), 'outputs/bankmkt-hd.joblib'))
+    joblib.dump(model,"outputs/bankmkt-hd.joblib")
 
 if __name__ == '__main__':
     main()
