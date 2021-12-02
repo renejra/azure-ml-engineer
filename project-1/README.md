@@ -52,6 +52,32 @@ previous experiment. Below you can see which were the top models found by AutoML
 
 ![Top models](assets/top_models.jpg)
 
+The results above where obtained by using the following configurations for AutoML:
+```python
+automl_config = AutoMLConfig(
+    experiment_timeout_minutes=30,
+    task='classification',
+    primary_metric='accuracy',
+    training_data=ds.to_pandas_dataframe(),
+    label_column_name='y',
+    n_cross_validations=2)
+```
+Now, why did we chose the above? Let me go a bit deeper into these configurations, and what do they mean.
+
+- First of all, the `experiment_timeout_minutes` assured that AutoML would try different types of models until this time threshold was reached.
+Going further on, would have meant more costs at (most likely) little return. Besides, we had a time limit of 2 hours for the provided virtual machine, which gave us a threshold for experimentation.
+
+- Secondly, the task refers to the objective of the jobs. We chose `classification` as our labels are only two types of labels ('yes' and 'no'). Other types of possible 
+tasks can be seen in [AutoML configuration documentation](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-auto-train).
+
+- Third, we chose `accuracy` as primary metric. A valid question here would be, why would you choose accuracy if other metrics (for example, AUC weighted accuracy) might have been a better, choice given an imbalanced dataset? The main reason was, that our baseline model was also evaluated and tuned for accuracy, so we need to both experiments
+to be comparable. Also, after having a deeper look into other metrics, the Voting Ensemble got incredible results (98% AUC weighted accuracy).
+
+- The fourth and fifth columns refer to the training data, which is passed as a DataFrame and the label column name, so AutoML knows against which column is it going
+to be training for.
+
+- Last but not least, we chose to have 2 `n_cross_validations`. What does this mean, and why was this? In ["how to configure training, validation, cross-validation and test data in AutoML"](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-configure-cross-validation-data-splits) we can see that this is an optional parameter for selecting the way we handle validation and testing splits of our data, and there are many ways and combinations to do so. If we wouldn't have included it, AutoML would have selected by default a validation mode depending on the size of our dataset. However, we chose to apply 2-fold cross-validation which means we would take 1/2 of our data for training and 1/2 for validation, expecting our resulting model to be very generalizable.
+
 ## Pipeline comparison
 The pipelines to train models where totally different, as well as the model architectures. In this regard, in the Logistic Regressor tuning we had only one model and
 had to take care of data preprocessing, while on AutoML the resulting model including an ensemble of XGBoost, Stochastic Gradient Descent, LightGBM and a Logistic Regressor,
