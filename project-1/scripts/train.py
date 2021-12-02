@@ -70,13 +70,13 @@ def main():
 
     args = parser.parse_args()
 
-    run.log("Regularization Strength:", float(args.C))
-    run.log("Max iterations:", int(args.max_iter))
+    run.log("regularization strength:", float(args.C))
+    run.log("max iterations:", int(args.max_iter))
 
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
     accuracy = model.score(x_test, y_test)
-    run.log("Accuracy", float(accuracy))
+    run.log("accuracy", float(accuracy))
 
     # Saving model
     joblib.dump(model,"outputs/bankmkt-hd.joblib")
