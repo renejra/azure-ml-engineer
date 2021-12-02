@@ -79,7 +79,7 @@ def main():
     run.log("accuracy", float(accuracy))
 
     # Saving model
-    joblib.dump(model,"outputs/bankmkt-hd.joblib")
+    joblib.dump(model,"./outputs/bankmkt-hd.joblib")
 
 if __name__ == '__main__':
     main()
