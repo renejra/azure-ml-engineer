@@ -12,48 +12,48 @@ data = {"data":
         [
           {
             "age": 17,
-            "campaign": 1,
-            "cons.conf.idx": -46.2,
-            "cons.price.idx": 92.893,
-            "contact": "cellular",
-            "day_of_week": "mon",
-            "default": "no",
-            "duration": 971,
-            "education": "university.degree",
-            "emp.var.rate": -1.8,
-            "euribor3m": 1.299,
-            "housing": "yes",
             "job": "blue-collar",
-            "loan": "yes",
             "marital": "married",
+            "education": "university.degree",
+            "default": "no",
+            "housing": "yes",
+            "loan": "yes",
+            "contact": "cellular",
             "month": "may",
-            "nr.employed": 5099.1,
+            "day_of_week": "mon",
+            "duration": 971,
+            "campaign": 1,
             "pdays": 999,
+            "previous": 1,
             "poutcome": "failure",
-            "previous": 1
+            "emp.var.rate": -1.8,
+            "cons.price.idx": 92.893,
+            "cons.conf.idx": -46.2,
+            "euribor3m": 1.299,
+            "nr.employed": 5099.1
           },
           {
             "age": 87,
-            "campaign": 1,
-            "cons.conf.idx": -46.2,
-            "cons.price.idx": 92.893,
-            "contact": "cellular",
-            "day_of_week": "mon",
-            "default": "no",
-            "duration": 471,
-            "education": "university.degree",
-            "emp.var.rate": -1.8,
-            "euribor3m": 1.299,
-            "housing": "yes",
             "job": "blue-collar",
-            "loan": "yes",
             "marital": "married",
+            "education": "university.degree",
+            "default": "no",
+            "housing": "yes",
+            "loan": "yes",
+            "contact": "cellular",
             "month": "may",
-            "nr.employed": 5099.1,
+            "day_of_week": "mon",
+            "duration": 471,
+            "campaign": 1,
             "pdays": 999,
+            "previous": 1,
             "poutcome": "failure",
-            "previous": 1
-          },
+            "emp.var.rate": -1.8,
+            "cons.price.idx": 92.893,
+            "cons.conf.idx": -46.2,
+            "euribor3m": 1.299,
+            "nr.employed": 5099.1
+          }
       ]
     }
 # Convert to JSON string
@@ -68,6 +68,6 @@ headers['Authorization'] = f'Bearer {key}'
 
 # Make the request and display the response
 resp = requests.post(scoring_uri, input_data, headers=headers)
-print(resp)
+print(resp.json())
 
 
