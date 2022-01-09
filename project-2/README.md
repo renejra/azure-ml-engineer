@@ -49,7 +49,7 @@ For our best model to be used by other apps or in `production`, we need to make 
 
 ![Deployed model](assets/deployed-model.jpg)
 
-### Enabling Application Insights
+### Enabling logs with Application Insights
 Application Insights is a log service that can be enabled both through the Azure ML Studio platform directly, or using Azure Python SDK. We used the latter to enable this feature that is commonly used to debug a deployed model. The code used for this purpose can be found in [`logs.py`](logs.py) file, which uses a config.json file to get the Workspace details and we pass in the endpoint name in order to activate the logs. In the image below, we can observe that after running `logs.py` file we get some logs responses as expected.
 
 ![Application Insights](assets/application-insights.jpg)
@@ -71,9 +71,17 @@ For others to be able to use an endpoint, it's important to document the expecte
 If you would like to see a longer screenshot of the Swagger documentation created, feel free to checkout this [bigger screenshot](assets/swagger_endpoints.png), that features the expanded explanations of the `GET` and `POST` endpoints, but that is not rendered in this README file as it is too long.
 
 ### Creating and deploying a pipeline
+THIS SECTION IS MISSING
 
 ## Screen Recording
-In order to demonstrate the above mentioned steps, we also provide a screencast recoding. The video can be found [in Youtube using this link]() and it features a demo of most of the resources mentioned above.
+In order to demonstrate the above mentioned steps, we also provide a screencast recoding. The video can be found [in Youtube using this link](https://youtu.be/9bJirgPb3oY) and it features a demo of most of the resources mentioned above. Hope you like it!
 
 ## Standout Suggestions
 Since we used the provided Virtual Machines of Udacity to access Azure, the optional section of creating a service principal and authenticate to it was not possible nor relevant. While we also do not provide the optional Apache Benchmark results, we did replace the relevant REST endpoint URI and Bearer Key on the [`benchmark.sh`](benchmark.sh) file script.
+
+## Ideas for project improvement
+The work on this project can be improved, of course. Some of the ideas I could think about are:
+- Improving security by leaving out all secrets from the repository. In this case I intentionally left them, since resources are already destroyed and so reviewers could see the endpoints created as in the images and video. But in a production environment I would use environment variables and take them out of our code.
+- Creating a standalone webapp to serve the Swagger documentation.
+- Improving the pipeline or adding more features. Some of these could be for example, retraining after dataset has changed or every certain amount of time upload a new dataset and trigger the pipeline.
+- Completing additional standout suggestions like exporting the model to ONNX or including parallel steps would be really cool.
