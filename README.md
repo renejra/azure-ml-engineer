@@ -1,2 +1,2 @@
 # azure-ml-engineer
-Repository for project work of Udacity's Azure ML Engineer nanodegree.
+Repository for my project work of Udacity's Azure ML Engineer nanodegree.
