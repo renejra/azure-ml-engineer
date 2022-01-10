@@ -4,6 +4,8 @@ This project is part of Udacity's Machine Learning Engineer in Azure nanodegree,
 ## Architectural Diagram
 ![Architecture diagram](assets/architecture-diagram.jpg)
 
+We followed the above architectural diagram during this project in two different procedures, first used the Azure ML Studio platform to go from steps 1-4 manually (mostly in a click-based manner), but we then used a [Jupyter Notebook](aml-pipelines-with-automated-machine-learning-step.ipynb) to create and publish an automated pipeline (step 5) with very similar steps, now using Azure Python SDK. All key steps will be covered below, providing screenshots of all completed steps throughout the process.
+
 ## Key Steps
 In this section we will deep-dive into all the processes and steps taken in the Azure cloud platform to achieve the project's objectives.
 
@@ -30,7 +32,7 @@ Now that we have a dataset for training and a virtual machine to run our experim
 - Exit criterion: 1 hour run
 - Concurrency: 5 nodes
 
-With these settings, we ran the experiment successfully as seen in the image below. The best model ended up being a **VotingEnsemble with AUC weighted accuracy of 94.77%.**
+With these settings, we ran the experiment successfully as seen in the image below. The **best model ended up being a VotingEnsemble with AUC weighted accuracy of 94.77%.**
 
 ![Experiment completed](assets/experiment-completed.jpg)
 
@@ -76,17 +78,39 @@ For others to be able to use an endpoint, it's important to document the expecte
 If you would like to see a longer screenshot of the Swagger documentation created, **feel free to checkout this [bigger screenshot](assets/swagger_endpoints.png) that features the expanded explanations of the `GET` and `POST` endpoints**, but that is not rendered in this README file as it is too long.
 
 ### Creating and deploying a pipeline
-THIS SECTION IS MISSING
+Before this step, we ran everything directly on the Azure ML Studio platform in a click-based manner, and while it was fairly easy to do so it is not really an automated procedure and it would be time consuming for a developer to retrain a model if, for example, the data changes or gets updated. **Now it's the time to use Azure Python SDK to automate most of what we did**, so if the dataset gets updated or changes, or we simply want to retrain our model after a specific amount of time, we can do so by using a managed REST API endpoint from an Azure Pipeline, **enabling us a whole new set of automated use cases in production**.
+
+All steps followed in this section can be found directly in this [Jupyter Notebook](aml-pipelines-with-automated-machine-learning-step.ipynb) so you can follow step-by-step what happened. In a nutshell, we do the following in the notebook:
+- Initialized the Azure Workspace by using a `config.json` file
+- Attached the experiment and `compute cluster` created beforehand
+- Grabbed the `dataset` registered
+- Created automared pipeline steps, including:
+    + Configured an AutoML run
+    + Setup of output variables (metrics data and best model data)
+- Submitted the pipeline. In the image below, we see that the pipeline was submitted for run.
+![Pipeline submitted](assets/pipeline-section.jpg)
+- Deployed the pipeline to an Azure-managed REST API endppoint. We can see in the image below, that both the prior pipeline run and the deployment of its endpoint both suceeded.
+![Pipeline suceeded](assets/pipeline-endpoint.jpg)
+- If we check in Azure ML Studio, we see the API endpoint status marked as `active` and its corresponding URL. 
+![Endpoint detail](assets/pipeline-endpoint-detail.jpg)
+![Endpoint detail](assets/pipeline-endpoint-detail-2.jpg)
+- We finally tried out the deployed REST endpoint to run the pipeline using the `Python's requests library`. With the easy use of a `POST` request, we basically submitted a pipeline run triggering the steps registered before. We can see in the image below that this submitted run was completed successfully.
+![Pipeline run](assets/pipeline-run-3.jpg)
+- The step before can also be inspected directly on the notebook, with the use of the `RunDetails widget` (see image below).
+![Widget](assets/pipeline-run-2.jpg)
+
+More details of the process, running pipeline, its endpoint and a live preview of the notebook with a peek on their widgets can also be found in the following section, during a screen recording.
 
 ## Screen Recording
-In order to demonstrate the above mentioned steps, we also provide a screencast recoding. The **video can be found [in Youtube using this link](https://youtu.be/9bJirgPb3oY)** and it features a demo of most of the resources mentioned above. Hope you like it!
+In order to demonstrate the above mentioned steps, we also provide a screencast recoding. The video can be found **[in Youtube using this link](https://youtu.be/9bJirgPb3oY) and it features a demo of most of the resources and steps mentioned above**. Hope you like it!
 
 ## Standout Suggestions
 Since we used the provided Virtual Machines of Udacity to access Azure, the optional section of creating a service principal and authenticate to it was not possible nor relevant. While we also do not provide the optional Apache Benchmark results, we did replace the relevant REST endpoint URI and Bearer Key on the [`benchmark.sh`](benchmark.sh) file script.
 
 ## Ideas for project improvement
 The work on this project can be improved, of course. Some of the ideas I could think about are:
+- **Including a requirements.txt** file to show dependencies and reproduce these experiments.
 - **Improving security** by leaving out all secrets from the repository. In this case I intentionally left them, since resources are already destroyed and so reviewers could see the endpoints created as in the images and video. But in a production environment I would use environment variables and take them out of our code.
 - Creating a **standalone webapp to serve the Swagger documentation**.
 - **Improving the pipeline** or adding more features. Some of these could be for example, retraining after dataset has changed or every certain amount of time upload a new dataset and trigger the pipeline.
-- Completing additional standout suggestions like **exporting the model to ONNX or including parallel steps** would be really cool.
+- **Exporting the model to ONNX** would enable portability of the model to other devices and platforms. This was also suggested as a standout suggestion from Udacity.
