@@ -1,1 +1,4 @@
-.idea
+**/venv.sh
+**/__pycache__/
+**/.DS_Store
+**/config.json
