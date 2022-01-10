@@ -10,8 +10,8 @@ We followed the above architectural diagram during this project in two different
 In this section we will deep-dive into all the processes and steps taken in the Azure cloud platform to achieve the project's objectives.
 
 ### Registering the Dataset
-The data used for this project is the [Bank Marketing Dataset](https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv). The dataset was first downloaded and subsequently uploaded into Azure. The image below shows the mentioned dataset correctly uploaded into Azure Machine Learning Studio.
-
+The data used for this project is the [Bank Marketing Dataset](https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv). The dataset was first downloaded and subsequently uploaded into Azure. The images below show the mentioned dataset correctly uploaded into Azure Machine Learning Studio.
+![Reviewed image](assets/dataset-review.jpg)
 ![Uploaded Dataset](assets/dataset-project.jpg)
 
 ### Creating a necessary resources
