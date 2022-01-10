@@ -114,3 +114,6 @@ The work on this project can be improved, of course. Some of the ideas I could t
 - Creating a **standalone webapp to serve the Swagger documentation**.
 - **Improving the pipeline** or adding more features. Some of these could be for example, retraining after dataset has changed or every certain amount of time upload a new dataset and trigger the pipeline.
 - **Exporting the model to ONNX** would enable portability of the model to other devices and platforms. This was also suggested as a standout suggestion from Udacity.
+
+## Acknowledgements and credits
+This project has been developed by [René Javier Rivero Arrieta](https://github.com/renejra) during Udacity's Azure Machine Learning Engineer nanodegree, using as base the [provided starter files from Udacity](https://github.com/udacity/nd00333_AZMLND_C2/tree/master/starter_files).
