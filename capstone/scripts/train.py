@@ -13,16 +13,22 @@ from azureml.data.dataset_factory import TabularDatasetFactory
 # import io
 
 # Data is located at:
-url = "https://automlsamplenotebookdata.blob.core.windows.net/automl-sample-notebook-data/bankmarketing_train.csv"
-dataset = TabularDatasetFactory.from_delimited_files(url)
+# url = ""
+# dataset = TabularDatasetFactory.from_delimited_files(url)
 
 # This other approach creates a DataFrame from the data
 # ds = requests.get(url, allow_redirects=True)
 # df = pd.read_csv(io.StringIO(ds.content.decode('utf-8')))
-# ws = Workspace.from_config()
-# datastore = ws.get_default_datastore()
-# ds = TabularDatasetFactory.register_pandas_dataframe(df, target=[(datastore, './training')], name='dataframe_name')
 
+# Stored locally
+df = pd.read_csv('../data/today.csv')
+
+# Connect to workspace
+ws = Workspace.from_config()
+datastore = ws.get_default_datastore()
+
+# Register dataset
+ds = TabularDatasetFactory.register_pandas_dataframe(df, target=[(datastore, './training')], name='dataframe_name')
 
 
 def clean_data(data):
@@ -65,7 +71,8 @@ def main():
     # Add arguments to script
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--C', type=float, default=1.0, help="Inverse of regularization strength. Smaller values cause stronger regularization")
+    parser.add_argument('--C', type=float, default=1.0,
+                        help="Inverse of regularization strength. Smaller values cause stronger regularization")
     parser.add_argument('--max_iter', type=int, default=100, help="Maximum number of iterations to converge")
 
     args = parser.parse_args()
@@ -79,7 +86,7 @@ def main():
     run.log("accuracy", float(accuracy))
 
     # Saving model
-    joblib.dump(model,"./outputs/bankmkt-hd.joblib")
+    joblib.dump(model,"./outputs/model-hd.joblib")
 
 if __name__ == '__main__':
     main()
