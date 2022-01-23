@@ -1,6 +1,7 @@
 **/venv.sh
 **/__pycache__/
-**/.DS_Store
-**/config.json
+**.DS_Store
+**config.json
 **.github
-**/exploration
+**/exploration/**
+**.env
