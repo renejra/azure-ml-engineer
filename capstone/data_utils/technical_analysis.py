@@ -74,8 +74,8 @@ def transform_std(df, confidence=80):
     :param confidence:
     :return:
     '''
-    df['btc_std_dev'] = df['returns'].expanding(2).std()
-    df['btc_mean'] = df['returns'].expanding(2).mean()
+    df['btc_std_dev'] = df['close'].expanding(2).std()
+    df['btc_mean'] = df['close'].expanding(2).mean()
     # df['conf_int_p'] = np.percentile(df['change'], (100-confidence)/2)
     # df['conf_int_m'] = np.percentile(df['change'], confidence + (100-confidence)/2)
     df['std_dif'] = (df['close'] - df['btc_std_dev']).abs()
