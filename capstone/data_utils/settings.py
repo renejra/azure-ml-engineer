@@ -1,5 +1,6 @@
 
 ma_values = [4,50,80]
+
 rsi_values = {
     'k': 3,
     'd': 3,

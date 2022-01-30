@@ -68,7 +68,7 @@ def transform_rsi(data, alpha=14, smoothK=3, smoothD=3):
 
 def transform_std(df, confidence=80):
     '''
-    Adds
+    Adds standard deviation and other features
 
     :param df:
     :param confidence:
