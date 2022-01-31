@@ -103,4 +103,4 @@ while searching for more material. The [AzureML documentation](https://docs.micr
 was also a great source for code examples whenever I had doubts. I'd also like to mention, that this project
 was indeed inspired by a [previous project of mine](https://github.com/renejra/ml-finance-btc), where I used
 AWS instead of Azure for predicting Bitcoin prices, and took this time the challenge of improving not only the training, 
-tuning and deploying procedures used, but also the data sourcing and processing part to get better results.
+tuning and deploying procedures used, but also the data sourcing and processing part aiming to get better results.
