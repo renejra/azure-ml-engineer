@@ -5,3 +5,7 @@
 **.github
 **/exploration/**
 **.env
+**/cache
+**.amlignore**
+**/.ipynb_aml_checkpoints
+**.amltmp
