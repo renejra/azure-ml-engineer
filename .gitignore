@@ -3,7 +3,6 @@
 **.DS_Store
 **config.json
 **.github
-**/exploration/**
 **.env
 **/cache
 **.amlignore**
