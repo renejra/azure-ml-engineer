@@ -15,7 +15,8 @@ from pathlib import Path
 # import io
 
 main_path = str(Path(__file__).absolute().parent.parent)
-ws = Workspace.from_config(path=main_path)
+ws = Workspace.from_config(path=main_path+'config.json')
+print(main_path)
 datastore = ws.get_default_datastore()
 
 dataset = Dataset.get_by_name(workspace=ws, name='hd_dataset')

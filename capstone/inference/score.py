@@ -9,9 +9,6 @@ import numpy as np
 import pandas as pd
 import joblib
 
-from dotenv import load_dotenv, find_dotenv
-load_dotenv(find_dotenv())
-
 import azureml.automl.core
 from azureml.automl.core.shared import logging_utilities, log_server
 from azureml.telemetry import INSTRUMENTATION_KEY
@@ -21,36 +18,7 @@ from inference_schema.parameter_types.numpy_parameter_type import NumpyParameter
 from inference_schema.parameter_types.pandas_parameter_type import PandasParameterType
 from inference_schema.parameter_types.standard_py_parameter_type import StandardPythonParameterType
 
-input_sample = pd.DataFrame({"Date": pd.Series(["example_value"], dtype="object"),
-                             "MA4": pd.Series([0.0], dtype="float64"),
-                             "MA50": pd.Series([0.0], dtype="float64"),
-                             "MA80": pd.Series([0.0], dtype="float64"),
-                             "RSI": pd.Series([0.0], dtype="float64"),
-                             "btc": pd.Series([0.0], dtype="float64"),
-                             "btc_std_dev": pd.Series([0.0], dtype="float64"),
-                             "crude oil": pd.Series([0.0], dtype="float64"),
-                             "difficulty": pd.Series([0.0], dtype="float64"),
-                             "euro": pd.Series([0.0], dtype="float64"),
-                             "ftse": pd.Series([0.0], dtype="float64"),
-                             "gold": pd.Series([0.0], dtype="float64"),
-                             "hashrate": pd.Series([0.0], dtype="float64"),
-                             "high": pd.Series([0.0], dtype="float64"),
-                             "hsi": pd.Series([0.0], dtype="float64"),
-                             "low": pd.Series([0.0], dtype="float64"),
-                             "nasdaq": pd.Series([0.0], dtype="float64"),
-                             "nikkei": pd.Series([0.0], dtype="float64"),
-                             "open": pd.Series([0.0], dtype="float64"),
-                             "rates": pd.Series([0.0], dtype="float64"),
-                             "shangai": pd.Series([0.0], dtype="float64"),
-                             "silver": pd.Series([0.0], dtype="float64"),
-                             "spy": pd.Series([0.0], dtype="float64"),
-                             "std_dif": pd.Series([0.0], dtype="float64"),
-                             "stochRSI": pd.Series([0.0], dtype="float64"),
-                             "t_cost": pd.Series([0.0], dtype="float64"),
-                             "transactions": pd.Series([0.0], dtype="float64"),
-                             "vol_btc": pd.Series([0.0], dtype="float64"),
-                             "y_returns": pd.Series([0.0], dtype="float64")})
-
+input_sample = pd.DataFrame({"Date": pd.Series(["example_value"], dtype="object"), "MA4": pd.Series([0.0], dtype="float64"), "MA50": pd.Series([0.0], dtype="float64"), "MA80": pd.Series([0.0], dtype="float64"), "RSI": pd.Series([0.0], dtype="float64"), "btc": pd.Series([0.0], dtype="float64"), "btc_std_dev": pd.Series([0.0], dtype="float64"), "crude oil": pd.Series([0.0], dtype="float64"), "difficulty": pd.Series([0.0], dtype="float64"), "euro": pd.Series([0.0], dtype="float64"), "ftse": pd.Series([0.0], dtype="float64"), "gold": pd.Series([0.0], dtype="float64"), "hashrate": pd.Series([0.0], dtype="float64"), "high": pd.Series([0.0], dtype="float64"), "hsi": pd.Series([0.0], dtype="float64"), "low": pd.Series([0.0], dtype="float64"), "nasdaq": pd.Series([0.0], dtype="float64"), "nikkei": pd.Series([0.0], dtype="float64"), "open": pd.Series([0.0], dtype="float64"), "rates": pd.Series([0.0], dtype="float64"), "shangai": pd.Series([0.0], dtype="float64"), "silver": pd.Series([0.0], dtype="float64"), "spy": pd.Series([0.0], dtype="float64"), "std_dif": pd.Series([0.0], dtype="float64"), "stochRSI": pd.Series([0.0], dtype="float64"), "t_cost": pd.Series([0.0], dtype="float64"), "transactions": pd.Series([0.0], dtype="float64"), "vol_btc": pd.Series([0.0], dtype="float64"), "y_returns": pd.Series([0.0], dtype="float64")})
 output_sample = np.array([0.0])
 method_sample = StandardPythonParameterType("predict")
 
@@ -66,7 +34,7 @@ def init():
     global model
     # This name is model.id of model that we want to deploy deserialize the model file back
     # into a sklearn model
-    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'bitcoin-automl.joblib')
+    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'best-automl-models.pkl')
     path = os.path.normpath(model_path)
     path_split = path.split(os.sep)
     log_server.update_custom_dimensions({'model_name': path_split[-3], 'model_version': path_split[-2]})
