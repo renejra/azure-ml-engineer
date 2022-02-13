@@ -8,3 +8,4 @@
 **.amlignore**
 **/.ipynb_aml_checkpoints
 **.amltmp
+**/explanation

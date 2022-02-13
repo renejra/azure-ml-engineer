@@ -32,25 +32,27 @@ print(f'training shape: {x_train.shape}, labels: {y_train.shape} \ntesting shape
 run = Run.get_context()
 
 def main():
-    # Add arguments to script
+    # Parse hyperparameter as arguments for training script
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--C', type=float, default=1.0,
                         help="Inverse of regularization strength. Smaller values cause stronger regularization")
     parser.add_argument('--max_iter', type=int, default=100, help="Maximum number of iterations to converge")
-
     args = parser.parse_args()
 
+    # run logs
     run.log("regularization strength:", float(args.C))
     run.log("max iterations:", int(args.max_iter))
 
+    # define model and pass in arguments
     model = LogisticRegression(C=args.C, max_iter=args.max_iter).fit(x_train, y_train)
 
+    # evaluate after a run
     accuracy = model.score(x_test, y_test)
     run.log("accuracy", float(accuracy))
 
     # Saving model
-    joblib.dump(model,"./outputs/model-hd.joblib")
+    joblib.dump(model,"./models/model-hd.joblib")
 
 if __name__ == '__main__':
     main()
