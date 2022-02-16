@@ -11,13 +11,14 @@ ws = Workspace.from_config(path=main_path+'/config.json')
 print(main_path)
 # datastore = ws.get_default_datastore()
 dataset = Dataset.get_by_name(workspace=ws, name='hd_dataset')
+df = dataset.to_pandas_dataframe()
 
 def clean_data(df):
     y_df = df.pop("y_c_shift")
     return df, y_df
 
 # Clean data and split for training and testing
-x, y = clean_data(dataset)
+x, y = clean_data(df)
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.75)
 print(f'training shape: {x_train.shape}, labels: {y_train.shape} \ntesting shape: {x_test.shape}, labels: {y_test.shape}')
 
@@ -44,7 +45,7 @@ def main():
     run.log("accuracy", float(accuracy))
 
     # Saving model
-    joblib.dump(model, main_path+"/models/model-hd.joblib")
+    # joblib.dump(model, main_path+"/models/model-hd.joblib")
 
 if __name__ == '__main__':
     main()
