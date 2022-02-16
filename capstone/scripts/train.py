@@ -4,11 +4,10 @@ import joblib
 from sklearn.model_selection import train_test_split
 from azureml.core import Workspace, Dataset
 from azureml.core.run import Run
-from pathlib import Path
+import os
+# from pathlib import Path
 
-run = Run.get_context()
-ws = run.experiment.workspace
-
+ws = Workspace.from_config()
 # datastore = ws.get_default_datastore()
 dataset = Dataset.get_by_name(workspace=ws, name='hd_dataset')
 df = dataset.to_pandas_dataframe()
@@ -17,7 +16,7 @@ def clean_data(x):
     y = x.pop("y_c_shift")
     return x, y
 
-# Clean data and split for training and testing
+run = Run.get_context()
 x, y = clean_data(df)
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.75)
 print(f'training shape: {x_train.shape}, labels: {y_train.shape} \ntesting shape: {x_test.shape}, labels: {y_test.shape}')
@@ -43,7 +42,9 @@ def main():
     accuracy = model.score(x_test, y_test)
     run.log("accuracy", float(accuracy))
 
-    # joblib.dump(model, main_path+"/models/model-hd.joblib")
+    # saving model
+    os.makedirs('outputs', exist_ok=True)
+    joblib.dump(value=model, filename='outputs/model-hd.joblib')
 
 if __name__ == '__main__':
     main()
