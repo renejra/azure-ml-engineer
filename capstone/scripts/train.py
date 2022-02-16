@@ -13,9 +13,9 @@ print(main_path)
 dataset = Dataset.get_by_name(workspace=ws, name='hd_dataset')
 df = dataset.to_pandas_dataframe()
 
-def clean_data(df):
-    y_df = df.pop("y_c_shift")
-    return df, y_df
+def clean_data(x):
+    y_df = x.pop("y_c_shift")
+    return x, y_df
 
 # Clean data and split for training and testing
 x, y = clean_data(df)
