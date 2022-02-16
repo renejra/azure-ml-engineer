@@ -4,12 +4,12 @@
 import json
 import logging
 import os
-import pickle
+# import pickle
 import numpy as np
 import pandas as pd
 import joblib
 
-import azureml.automl.core
+# import azureml.automl.core
 from azureml.automl.core.shared import logging_utilities, log_server
 from azureml.telemetry import INSTRUMENTATION_KEY
 
@@ -34,7 +34,7 @@ def init():
     global model
     # This name is model.id of model that we want to deploy deserialize the model file back
     # into a sklearn model
-    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'best-automl-model.joblib')
+    model_path = os.path.join(os.getenv('AZUREML_MODEL_DIR'), 'best-automl-model')
     path = os.path.normpath(model_path)
     path_split = path.split(os.sep)
     log_server.update_custom_dimensions({'model_name': path_split[-3], 'model_version': path_split[-2]})

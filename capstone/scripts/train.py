@@ -1,29 +1,20 @@
 from sklearn.linear_model import LogisticRegression
 import argparse
-import os
-# import numpy as np
-# from sklearn.metrics import mean_squared_error
 import joblib
 from sklearn.model_selection import train_test_split
-# from sklearn.preprocessing import OneHotEncoder
-import pandas as pd
 from azureml.core import Workspace, Dataset
 from azureml.core.run import Run
-from azureml.data.dataset_factory import TabularDatasetFactory
 from pathlib import Path
-# import requests
-# import io
 
 main_path = str(Path(__file__).absolute().parent.parent)
-ws = Workspace.from_config(path=main_path+'config.json')
+ws = Workspace.from_config(path=main_path+'/config.json')
 print(main_path)
-datastore = ws.get_default_datastore()
-
+# datastore = ws.get_default_datastore()
 dataset = Dataset.get_by_name(workspace=ws, name='hd_dataset')
 
-def clean_data(data):
-    y_df = x_df.pop("y_c_shift")
-    return x_df, y_df
+def clean_data(df):
+    y_df = df.pop("y_c_shift")
+    return df, y_df
 
 # Clean data and split for training and testing
 x, y = clean_data(dataset)
@@ -53,7 +44,7 @@ def main():
     run.log("accuracy", float(accuracy))
 
     # Saving model
-    joblib.dump(model,"./models/model-hd.joblib")
+    joblib.dump(model, main_path+"/models/model-hd.joblib")
 
 if __name__ == '__main__':
     main()
