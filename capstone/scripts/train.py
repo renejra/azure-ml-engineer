@@ -9,6 +9,8 @@ import os
 
 def clean_data(dataset):
     x = dataset.to_pandas_dataframe()
+    x = x.dropna()
+    dates = x.pop("Date")
     y = x.pop("y_c_shift")
     return x, y
 
@@ -32,6 +34,8 @@ def main():
     x, y = clean_data(dataset)
     x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.75)
     print(f'training shape: {x_train.shape}, labels: {y_train.shape} \ntesting shape: {x_test.shape}, labels: {y_test.shape}')
+    print(x_train.tail(3))
+    print(y_train.tail(3))
 
     # run logs
     run.log("regularization strength:", float(args.C))
