@@ -5,12 +5,15 @@ capabilities to train, tune and deploy a machine learning powered trading signal
 Bitcoin prices would go up (BUY, 1), down (SELL, -1) or stay around the same (HOLD, 0).
 
 ## Project Set Up and Installation
-In order to setup this project, you will need certain libraries installed. The easiest way to do this is to install
-conda, and run the following line on a terminal within the `/casptone` directory:
 
+In order to run this project in AzureML, you will need certain libraries installed. The easiest way to do this is to install
+conda, and run the following line on a terminal within the `/casptone` directory:
 ```bash
-conda install --file envs/env.yml
+conda install --file envs/env.yml --name <your_env_name>
 ```
+In case you also wish to run the data sourcing and feature engineering notebook, please also install the necessary
+libraries found in `envs/data_env.yml` with a similar command.
+
 This will install all dependencies needed for this project, creating an environment with a given name of yours. 
 This file is also used within AzureML, to download relevant dependencies into a reproducible environment, that we can use
 to train, tune and deploy our models on the cloud platform with ease.
