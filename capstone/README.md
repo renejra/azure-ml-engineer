@@ -88,16 +88,20 @@ logistic regression (the one we'll tune later, by the way) XGBoost classifier an
 
 ![AutoML RunDetails](assets/automl-rundetails.jpg)
 
-The best performing model (voting ensemble), uses a weighted ensemble of many other models. Parameters can be seen
-below.
-
-![Parameters AutoML](assets/ensemble-details.jpg)
-
 I believe our model is not performing so nicely, as I really limited the training time of our experiment (30 min), and
-also as I fed in a non-treated dataset to try out AutoML's featurization. 
+also as I fed in a non-treated dataset to try out AutoML's featurization.
+
 Anyhow, the approach indeed tried different featurization possibilities like MinMaxScaling,
 StandardScalerWrapper and more. If I'd like to improve this model's performance I would either include more features,
 try out different transformations, or increase the max allowed training time for our experiment.
+
+![Parameters AutoML](assets/ensemble-details.jpg)
+
+The best performing model (voting ensemble), uses a weighted ensemble of many other models. The models inside the 
+voting ensemble can be seen above, while the weights of the models can be seen on the 11th cell of the [automl notebook](2-automl.ipynb)
+(see the screenshot below as well).
+
+![Parameters AutoML 2](assets/automl-parameters.jpg)
 
 ## Hyperparameter Tuning
 
