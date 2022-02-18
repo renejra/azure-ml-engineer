@@ -11,8 +11,8 @@ conda, and run the following line on a terminal within the `/casptone` directory
 ```bash
 conda install --file envs/env.yml
 ```
-This will install all dependencies needed for this project, creating an environment named `az-capstone`. This file
-is also used within AzureML, to download relevant dependencies into a reproducible environment, that we can use
+This will install all dependencies needed for this project, creating an environment with a given name of yours. 
+This file is also used within AzureML, to download relevant dependencies into a reproducible environment, that we can use
 to train, tune and deploy our models on the cloud platform with ease.
 
 In order for the data sourcing and preprocessing part to work, you will additionally need to setup a Quandl account,
@@ -25,9 +25,9 @@ For the notebooks to be able to connect to your relevant Azure subscription and 
 instance, you will need to provide a `config.json` file in the following format:
 ```bash
 {
-  this: that
-  this: that
-  this: that
+    "subscription_id": "<subscription-id>",
+    "resource_group": "<resource-group>",
+    "workspace_name": "<workspace-name>"
 }
 ```
 This file is loaded on the [automl notebook](2-automl.ipynb) and the [hyperdrive](3-hyperparameter_tuning.ipynb) one
@@ -36,7 +36,9 @@ to create a connection with your AzureML resources.
 ## Dataset
 
 ### Overview
-The data I will be using include financial data (important stock indices, volume, interest rates, money supply...), 
+The data I will be using includes only **external resources outside of Azure environment** for which I've created
+a separate notebook for data sourcing and feature engineering. The data includes financial data 
+(like important stock indices, volume, interest rates, money supply...), 
 Bitcoin fundamentals (transactions, transaction cost, hashrate...), commodity prices (gold, silver, oil), and 
 relevant technical indicators that traders use (moving averages, Stochastic Relative Strenght Index,
 standard deviation...). Financial data and commodities price were sourced from Yahoo Finance using `yfinance` library, 
@@ -66,7 +68,13 @@ but they are then registered on AzureML as a Dataset prior training. If you want
 how the data was sourced in detail, please check the [data sourcing notebook](1-data-sourcing.ipynb).
 
 ## Automated ML
-*TODO*: Give an overview of the `automl` settings and configuration you used for this experiment
+Our AutoML run was configured to have the *classification task* of predicting next day’s buy, sell or hold label, 
+or the column `y_c_shift`. Our primary metric will be **accuracy**, 
+as we need a metric we can compare later with HyperDrive and considering that our problem doesn’t 
+have particular implications on false positives or negatives, that would make us opt for recall or precision instead. 
+I’m also adding the `automatic featurization`, so AutoML takes care of necessary data transformations, 
+trying out different methods.  As timeout for this project I used *30 minutes*, to put a cap on how long this will take. 
+Also, the usage of VMs to access Azure on a limited time (1h) added pressure on this metric.
 
 ### Results
 *TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
@@ -74,7 +82,26 @@ how the data was sourced in detail, please check the [data sourcing notebook](1-
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
 ## Hyperparameter Tuning
-*TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
+
+The model that we will be training can be found in the train.py file, where we setup the training run by importing necessary libraries, 
+preparing and splitting the data, and finally setting up the main training function. 
+We picked for this task a **Logistic Regressor** from `scikit-learn`, 
+as it works well for multi-label classification within tasks where we do not have a big amount of data.
+
+For tuning our model, we used `random parameter sampling` over the parameters “C” (inverse regularization strength) and “max_iter” (maximum iterations). 
+Randomness is a good way to go through a set of values without compromising too much the computational resources needed.
+- **C** (inverse regularization strength): Smaller values implies stronger regularization (or generalization) of the model to unseen data.
+On this parameter we selected a random choice of values from 0.001 to 1.
+- **max_iter** (maximum iterations): Maximum numbers of iterations for the solvers to converge. A higher amount of iterations imply a more (over-) fitted model.
+For this parameter we selected a random choice of values from 100 to 500.
+
+As a termination policy, we picked the **BanditPolicy**, which uses a slack criteria to terminate the policy. 
+Basically, the bandit policy terminates the run if new models do not perform within a 
+given percentage range of the top accuracy gotten in previous trainings.
+
+In order to compare our model with the one got in AutoML, we setup our experiment with the same performance metric. 
+For this reason, we used **accuracy**, as in our case neither false or negative positives have a particularly 
+bad outcome to select precision, recall or other metrics.
 
 
 ### Results
@@ -83,7 +110,15 @@ how the data was sourced in detail, please check the [data sourcing notebook](1-
 *TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
 ## Model Deployment
-*TODO*: Give an overview of the deployed model and instructions on how to query the endpoint with a sample input.
+The model we selected for deployment was the AutoML best model. For this we needed to configure a web service for
+deployment and provide a compute instance for it to work. In order to query the endpoint, we use the `requests` library,
+building up our data in a **request format that uses JSON** to parse it. It is important to mention, that *AzureML
+expects the data columns to be sorted alphabetically* and in a certain data structure. Besides, we also need to
+drop any labels before querying the endpoint. To pass in part of our data, we used the following transformation:
+```python
+X_test_json = df[sorted(df.columns)].drop(columns=['y_c_shift']).tail().to_json(orient="records")
+```
+... and got the results as a list of values.
 
 ## Screen Recording
 *TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
@@ -91,9 +126,10 @@ how the data was sourced in detail, please check the [data sourcing notebook](1-
 - Demo of the deployed  model
 - Demo of a sample request sent to the endpoint and its response
 
-## Standout Suggestions
-*TODO (Optional):* This is where you can provide information about any standout suggestions that you have attempted.
-
+## Ideas for future improvement
+- We could think on using environment variables to have better control of project configurations.
+- We could setup pipelines that run the data processing and feature engineering part as a script.
+- We could save the model as an ONNX format for usage in different environments.
 
 ## Acknowledgements
 This project was done as my capstone project for Udacity's Azure ML Engineer. I'd like to give credits to Udacity
