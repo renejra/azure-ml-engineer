@@ -80,10 +80,24 @@ I’m also adding the `automatic featurization`, so AutoML takes care of necessa
 trying out different methods.  As timeout for this project I used *30 minutes*, to put a cap on how long this will take. 
 Also, the usage of VMs to access Azure on a limited time (1h) added pressure on this metric.
 
-### Results
-*TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
+### AutoML Results
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+The best performing model from AutoML was a **voting ensemble, with around 52% accuracy**, which was the primary metric.
+Other metrics, like AUC weighted were a bit better at around 66%. The models that came behind the voting ensemble, include
+logistic regression (the one we'll tune later, by the way) XGBoost classifier and LightGBM, amongst others.
+
+![AutoML RunDetails](assets/automl-rundetails.jpg)
+
+The best performing model in this case, a voting ensemble, uses a weighted ensemble of many other models. The parameters
+of each model are complex to show in a screeshot, but here is my best try at this.
+
+![Parameters AutoML](assets/ensemble-details.jpg)
+
+I believe our model is performing quite poorly as I really limited the training time of our experiment (30 min), and
+also as I fed in a non-treated dataset to try out AutoML's featurization. 
+Anyhow, the approach indeed tried different featurization possibilities like MinMaxScaling,
+StandardScalerWrapper and more. If I'd like to improve this model's performance I would either include more features,
+try out different transformations, or increase the max allowed training time for our experiment.
 
 ## Hyperparameter Tuning
 
@@ -108,27 +122,44 @@ For this reason, we used **accuracy**, as in our case neither false or negative 
 bad outcome to select precision, recall or other metrics.
 
 
-### Results
-*TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
+### HyperDrive Results
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+Our HyperDrive model performed a bit better than our AutoML model, with a 55.9% accuracy using the parameters C=0.298, 
+maximum iterations of 170. It may make sense HD performed better than AutoML, 
+as we really did spend much more training and tuning time on this one. The best model details can be seen below.
+
+![HD BestModel](assets/hd-id-details.jpg)
+
+To improve model results, I would be a bit more loose with early stopping criteria, 
+as I also limited the model in terms of training iterations (50) and
+the bandit early termination policy. Hopefully I also have a good budget for training models next time XD.
+
+We can inspect more details while training of the best performing models using the RunDetail widget shown below.
+
+![HD RunDetails](assets/hd-rundetails.jpg)
 
 ## Model Deployment
 The model we selected for deployment was the AutoML best model. For this we needed to configure a web service for
-deployment and provide a compute instance for it to work. In order to query the endpoint, we use the `requests` library,
+deployment and provide a compute instance for it to work. We can see a screenshot of a healthy deployed model endpoint
+below:
+
+![Deployment](assets/best-automl-model-endpoint.jpg)
+
+In order to query the endpoint, we use the `requests` library,
 building up our data in a **request format that uses JSON** to parse it. It is important to mention, that *AzureML
 expects the data columns to be sorted alphabetically* and in a certain data structure. Besides, we also need to
 drop any labels before querying the endpoint. To pass in part of our data, we used the following transformation:
+
 ```python
 X_test_json = df[sorted(df.columns)].drop(columns=['y_c_shift']).tail().to_json(orient="records")
 ```
+
 ... and got the results as a list of values.
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
-- A working model
-- Demo of the deployed  model
-- Demo of a sample request sent to the endpoint and its response
+
+I'm also providing a screen recording of the notebooks, models and most of the things done in this capstone,
+including a live query of the endpoint. Follow [this link to see the recording]().
 
 ## Ideas for future improvement
 - We could think on using environment variables to have better control of project configurations.
