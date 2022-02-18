@@ -9,8 +9,9 @@ Bitcoin prices would go up (BUY, 1), down (SELL, -1) or stay around the same (HO
 In order to run this project in AzureML, you will need certain libraries installed. The easiest way to do this is to install
 conda, and run the following line on a terminal within the `/casptone` directory:
 ```bash
-conda install --file envs/env.yml --name <your_env_name>
+conda env create --file envs/env.yml --name <your_env_name>
 ```
+The provided `env.yml` file is a minimalistic one aimed for use in AzureML.
 In case you also wish to run the data sourcing and feature engineering notebook, please also install the necessary
 libraries found in `envs/data_env.yml` with a similar command.
 
