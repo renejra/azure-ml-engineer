@@ -50,7 +50,7 @@ def main():
 
     # saving model
     os.makedirs('outputs', exist_ok=True)
-    joblib.dump(value=model, filename='model-hd.joblib')
+    joblib.dump(value=model, filename='outputs/model-hd.joblib')
 
 if __name__ == '__main__':
     main()
