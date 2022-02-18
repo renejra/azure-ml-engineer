@@ -1,4 +1,4 @@
-name: az-capstone
+name: data_env
 channels:
   - defaults
 dependencies:
