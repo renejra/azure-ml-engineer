@@ -163,7 +163,7 @@ X_test_json = df[sorted(df.columns)].drop(columns=['y_c_shift']).tail().to_json(
 ## Screen Recording
 
 I'm also providing a screen recording of the notebooks, models and most of the things done in this capstone,
-including a live query of the endpoint. Follow [this link to see the recording]().
+including a live query of the endpoint. Follow [this link to see the recording](https://youtu.be/xh-1igozMNw).
 
 ## Ideas for future improvement
 - We could think on using environment variables to have better control of project configurations.
